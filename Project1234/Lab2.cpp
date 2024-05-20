@@ -60,6 +60,9 @@ bool compare_matrices(float** A, float** B, int rows, int cols, float epsilon = 
 
 int main() {
     setlocale(LC_ALL, "Russian");
+
+    cout << "Лабораторная работа №2" << endl << "090304-РПИб-о23" << endl << "Рыжкова Е.А." << endl << endl;
+
     const int N = 2048;
     int blockSize = 16;
     float** a = new_matrix(N);
