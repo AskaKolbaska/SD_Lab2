@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 float** new_matrix(const int N) {
     float** a = new float* [N];
     float* memp = new float[N * N];
@@ -16,7 +15,7 @@ float** new_matrix(const int N) {
 }
 
 void matrix_multiply(float** A, float** B, float** C, int N) {
-#pragma omp parallel for
+#pragma omp parallel for schedule(static)
     for (int i = 0; i < N; ++i) {
         for (int k = 0; k < N; ++k) {
             float r = A[i][k];
@@ -60,9 +59,6 @@ bool compare_matrices(float** A, float** B, int rows, int cols, float epsilon = 
 
 int main() {
     setlocale(LC_ALL, "Russian");
-
-    cout << "Лабораторная работа №2" << endl << "090304-РПИб-о23" << endl << "Рыжкова Е.А." << endl << endl;
-
     const int N = 2048;
     int blockSize = 16;
     float** a = new_matrix(N);
@@ -95,7 +91,7 @@ int main() {
     cout << "OpenBLAS SGEMM: Время выполнения = " << elapsed_secs << " секунд." << endl;
     cout << "Производительность = " << (2.0 * N * N * N / elapsed_secs * 1.0e-6) << " MFlops." << endl;
 
-  
+
     // Третий метод: Блочное умножение матриц
     start = clock();
     block_matrix_multiply(a, b, c3, N, blockSize);
@@ -103,7 +99,7 @@ int main() {
     elapsed_secs = double(end - start) / CLOCKS_PER_SEC;
     cout << "Блочное умножение: Время выполнения = " << elapsed_secs << " секунд." << endl;
     cout << "Производительность = " << (2.0 * N * N * N / elapsed_secs * 1.0e-6) << " MFlops." << endl;
-  
+
     // Сравнение матриц для проверки корректности
     if (compare_matrices(c1, c2, N, N))
         cout << "Матрицы c1 и c2 равны." << endl;
